@@ -6,17 +6,154 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700,800&amp;subset=korean" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<script>
+    var set_money=2000; //초기 자본
+    var set_maxmoney=80; //최대걸수있는돈 (%)
+    var set_maxcnt=3; //최대 걸수있는 마리수
+    var set_meter=600; //경기장길이
+    var set_number=5; //마리수
+    var set_speed=4; //최고속도
+
+    var cnt=1;
+    var checkcnt=0;
+    var play=0;
+    function set_game(){
+        if(set_maxmoney>100)set_maxmoney=100;
+        document.all['mymoney'].value=set_money;
+         lqrest();
+    }
+
+    //시작
+    function lqstart(){
+        if(play==0){
+                
+                cnt=0;
+                money=0;
+                checkcnt=0;
+                allmoney=document.all['mymoney'].value*1;
+                
+		//몇 마리 걸었는지
+                for(i=1;i<=set_number;i++)money+=document.all['race['+i+']'].value*1
+                for(i=1;i<=set_number;i++){
+                    if((document.all['race['+i+']'].value*1)>0)checkcnt++;
+                }
+                if(checkcnt>set_maxcnt){
+                    alert(set_maxcnt+"마리이상 걸수없습니다.");
+                    return false;
+                }else if(money == 0){
+                    alert("돈을 걸어주세요");
+                    return false;
+                }else if(money > allmoney*set_maxmoney/100 && allmoney>100){
+                    alert("자신이 가진돈의 "+set_maxmoney+"% 이상은 걸수없습니다.\n\n현재가능금액 : "+allmoney*set_maxmoney/100);
+                    return false;
+                }else if(allmoney<money){
+                    alert("돈이모자랍니다.");
+                    return false;
+                }
+                for(i=1;i<=set_number;i++){
+                    //수정못하게 설정
+                    document.all['race['+i+']'].readOnly=true;
+                }
+            document.all['mymoney'].value=document.all['mymoney'].value*1-money;
+            //경기 시작
+            racing();
+            
+        }
+    }
+
+    //리셋
+    function lqrest(){            
+        if(document.all['mymoney'].value*1<=0){alert('돈이 모자랍니다.');return false;}
+        cnt=0;
+        money=0;
+        checkcnt=0;
+        play=0;
+ 	for(i=1;i<=set_number;i++){
+            document.all['race['+i+']'].readOnly=false;
+            document.all['race['+i+']'].value=0;
+            document.all['r['+i+']'].value=0;
+            document.all['m['+i+']'].value=0;
+            document.all['bar['+i+']'].width=0;
+        }
+}
+
+    //레이싱
+    function racing(){
+        play=1;
+        for(i=1;i<=set_number;i++){
+            //도착시 등수 매기기
+            if(document.all['m['+i+']'].value>=set_meter && document.all['r['+i+']'].value == 0){document.all['r['+i+']'].value=cnt; cnt++;}
+            //다안왔으면
+            if(document.all['m['+i+']'].value<set_meter){
+                //랜덤값 속도 지정
+                rand=Math.floor(Math.random()*100%set_speed);
+  	   // 속도 만큼 이동 
+                document.all['m['+i+']'].value=(document.all['m['+i+']'].value*1+rand);
+                document.all['bar['+i+']'].width=document.all['m['+i+']'].value;
+            }
+        }
+        
+        if(cnt==set_number+1) raceend();
+        else LQtime=setTimeout("racing()",10);
+        
+    }
+    
+    function raceend(){
+        result_m=0;
+        for(i=1;i<=set_number;i++){
+            if(document.all['r['+i+']'].value=='1')result_m+=document.all['race['+i+']'].value*3;
+            if(document.all['r['+i+']'].value=='2')result_m+=document.all['race['+i+']'].value*2;
+            if(document.all['r['+i+']'].value*1==set_number)result_m-=document.all['race['+i+']'].value*2;
+        }
+        document.all['mymoney'].value=document.all['mymoney'].value*1+result_m;
+        alert('게임종료 \n\n'+result_m+' point');
+    }
+    function set_ground(){
+
+    }
+</script>
+
 	<title>file I/O</title>
 </head>
-<body>
+<body onload = "set_game()" >
     <div class="container">
      <br>
      <div class="jumbotron">
        <h1>경마 <span class="glyphicon glyphicon-signal"></span></h1>
-	<p></p>
-     </div>
-     <div class="row marketing">
-     </div>
+	
+보유금액 : <INPUT TYPE="text" NAME="mymoney" value=1000 readonly>
+<TABLE border=1><form name=lqrace method=post>
+<TR>
+    <script>document.write("<TD width="+(set_meter+30)+">경기장</TD>");</script>
+    
+    <TD width=30>M</TD>
+    <TD width=50>걸린 돈</TD>
+    <TD>결과</TD>
+</TR>
+<script>
+document.write("<TR><TD style='color: red'><img src=block.gif width=1 id=bar["+1+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+1+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+1+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+1+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+1+"] size=3 value=0 readonly>등</TD></TR>");
+document.write("<TR><TD style='color:  blue'><img src=block.gif width=1 id=bar["+2+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+2+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+2+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+2+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+2+"] size=3 value=0 readonly>등</TD></TR>");
+document.write("<TR><TD style='color: green'><img src=block.gif width=1 id=bar["+3+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+3+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+3+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+3+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+3+"] size=3 value=0 readonly>등</TD></TR>");
+document.write("<TR><TD style='color: black'><img src=block.gif width=1 id=bar["+4+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+4+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+4+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+4+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+4+"] size=3 value=0 readonly>등</TD></TR>");
+document.write("<TR><TD style='color: orange'><img src=block.gif width=1 id=bar["+5+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+5+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+5+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+5+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+5+"] size=3 value=0 readonly>등</TD></TR>");
+
+
+</script>
+</TABLE>
+<input type="button" onclick="lqstart()" value="시작" name=star>
+<input type="button" onclick="lqrest()" value="다시" name=rest></form>
+
+     
    </div> <!-- /container -->
+<div class="row marketing">
+	<h3>
+	<p>빨간 말은 처음엔 느리지만 점점 빨라집니다. ( 현재 승률 : 00.00% 배당금 00.00 )</p>
+	<p>파란 말은 아무도 못 말립니다. ( 모든 수치 랜덤) ( 현재 승률 : 00.00% 배당금 00.00 )</p>
+	<p>초록 말은 처음엔 빠르지만 갈수록 느려집니다. ( 현재 승률 : 00.00% 배당금 00.00 )</p>
+	<p>검은 말은 평균적으로 달립니다.(모든 수치 평균)  ( 현재 승률 : 00.00% 배당금 00.00 )</p>
+	<p>노란 말은 빨라졌다가 느려졌다가를 반복합니다. ( 현재 승률 : 00.00% 배당금 00.00 )</p>
+	</h3>
+     </div>
   </body>
 </html>
