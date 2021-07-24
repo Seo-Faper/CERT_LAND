@@ -80,10 +80,16 @@
 
     //레이싱
     function racing(){
+        if(cnt==set_number) raceend();
+        else LQtime=setTimeout("racing()",10);
         play=1;
         for(i=1;i<=set_number;i++){
             //도착시 등수 매기기
-            if(document.all['m['+i+']'].value>=set_meter && document.all['r['+i+']'].value == 0){document.all['r['+i+']'].value=cnt; cnt++;}
+            if(document.all['m['+i+']'].value>=set_meter && document.all['r['+i+']'].value == 0){
+		cnt++;
+		document.all['r['+i+']'].value=cnt;
+
+		}
             //다안왔으면
             if(document.all['m['+i+']'].value<set_meter){
                 //랜덤값 속도 지정
@@ -93,9 +99,6 @@
                 document.all['bar['+i+']'].width=document.all['m['+i+']'].value;
             }
         }
-        
-        if(cnt==set_number+1) raceend();
-        else LQtime=setTimeout("racing()",10);
         
     }
     
@@ -132,11 +135,13 @@
     <TD>결과</TD>
 </TR>
 <script>
-document.write("<TR><TD style='color: red'><img src=block.gif width=1 id=bar["+1+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+1+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+1+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+1+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+1+"] size=3 value=0 readonly>등</TD></TR>");
-document.write("<TR><TD style='color:  blue'><img src=block.gif width=1 id=bar["+2+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+2+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+2+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+2+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+2+"] size=3 value=0 readonly>등</TD></TR>");
-document.write("<TR><TD style='color: green'><img src=block.gif width=1 id=bar["+3+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+3+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+3+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+3+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+3+"] size=3 value=0 readonly>등</TD></TR>");
-document.write("<TR><TD style='color: black'><img src=block.gif width=1 id=bar["+4+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+4+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+4+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+4+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+4+"] size=3 value=0 readonly>등</TD></TR>");
-document.write("<TR><TD style='color: orange'><img src=block.gif width=1 id=bar["+5+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+5+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+5+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+5+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+5+"] size=3 value=0 readonly>등</TD></TR>");
+var col = new Array("skyblue","red","blue","green","black","orange");
+
+for(var i = 1; i<=set_number; i++){
+	
+document.write("<TR><TD style='color: "+col[i]+"'><img src=block.gif width=1 id=bar["+i+"] height=1><font size=3><B><font color=333333>/</font>#*</B> <span id=c["+i+"]></span></font></TD><TD><INPUT TYPE=text NAME=m["+i+"] size=3 value=0 readonly></TD><TD><INPUT TYPE=text NAME=race["+i+"] size=5 value=0></TD><TD><INPUT TYPE=text NAME=r["+i+"] size=3 value=0 readonly>등</TD></TR>");
+
+}
 
 
 </script>

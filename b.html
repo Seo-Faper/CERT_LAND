@@ -7,16 +7,83 @@
     <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700,800&amp;subset=korean" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<title>file I/O</title>
+    <script>
 
+function register(){
+ const id = document.getElementById('id').value;
+ const pwd = document.getElementById('pwd').value;
+ save(id,pwd);
+}
+function save(fileName, content) {
+    var blob = new Blob([content], { type: 'text/plain' });
+    objURL = window.URL.createObjectURL(blob);
+            
+    // 이전에 생성된 메모리 해제
+    if (window.__Xr_objURL_forCreatingFile__) {
+        window.URL.revokeObjectURL(window.__Xr_objURL_forCreatingFile__);
+    }
+    window.__Xr_objURL_forCreatingFile__ = objURL;
+    var a = document.createElement('a');
+    a.download = fileName;
+    a.href = objURL;
+    a.click();
+}
+</script>
 </head>
 <body>
     <div class="container">
      <br>
      <div class="jumbotron">
        <h1>경마 <span class="glyphicon glyphicon-signal"></span></h1>
-	<div class="container">
-     </div>
+	<div class="wrap">
+        <div class="login">
+            <h2>로그인</h2>
+            <div class="login_id">
+                <h4>ID</h4>
+                <input type="text" name="" id="id" placeholder="Id">
+            </div>
+            <div class="login_pw">
+                <h4>Password</h4>
+                <input type="password" name="" id="pwd" placeholder="Password">
+            </div>
+            </div>
+            <div class="submit">
+                <input type="submit" value="로그인">
+	    <input type="submit" value="회원가입" onclick="register()">
+            </div>
+        </div>
+    </div>
+	<pre id="preview">텍스트 파일 내용 출력 영역</pre>
 
+<input type="file" id="getfile" accept="text/*">
+
+<script>
+
+var file = document.querySelector('#getfile');
+
+
+
+file.onchange = function () { 
+
+    var fileList = file.files ;
+
+    
+
+    var reader = new FileReader();
+
+    reader.readAsText(fileList [0]);
+
+
+
+    reader.onload = function  () {
+
+        document.querySelector('#preview').textContent = reader.result ;
+
+    }; 
+
+}; 
+
+</script>
      <div class="row marketing">
      </div>
    </div> <!-- /container -->
