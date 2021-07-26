@@ -1,62 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
+ <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700,800&amp;subset=korean" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<title>file I/O</title>
-    <script>
 
-function register(){
- const id = document.getElementById('id').value;
- const pwd = document.getElementById('pwd').value;
- save(id,pwd);
-}
-function save(fileName, content) {
-    var blob = new Blob([content], { type: 'text/plain' });
-    objURL = window.URL.createObjectURL(blob);
-            
-    // 이전에 생성된 메모리 해제
-    if (window.__Xr_objURL_forCreatingFile__) {
-        window.URL.revokeObjectURL(window.__Xr_objURL_forCreatingFile__);
+<style>
+    .drop-zone {
+        width: 500px;
+        height: 500px;
+        background-color: azure
     }
-    window.__Xr_objURL_forCreatingFile__ = objURL;
-    var a = document.createElement('a');
-    a.download = fileName;
-    a.href = objURL;
-    a.click();
-}
-</script>
+
+    .drop-zone-dragenter, .drop-zone-dragover {
+        border: 10px solid black;
+    }
+
+</style>
 </head>
 <body>
     <div class="container">
      <br>
-     <div class="jumbotron">
-       <h1>경마 <span class="glyphicon glyphicon-signal"></span></h1>
-	<div class="wrap">
-        <div class="login">
-            <h2>로그인</h2>
-            <div class="login_id">
-                <h4>ID</h4>
-                <input type="text" name="" id="id" placeholder="Id">
-            </div>
-            <div class="login_pw">
-                <h4>Password</h4>
-                <input type="password" name="" id="pwd" placeholder="Password">
-            </div>
-            </div>
-            <div class="submit">
-                <input type="submit" value="로그인">
-	    <input type="submit" value="회원가입" onclick="register()">
-            </div>
+    
+
+<nav>
+
+<p id = "a1">IP (0) </p>
+	<lu id = ip>
+	
+	</ul>
+
+<p id = "a2">URL (0) </p>
+	<ul id = url>
+	</ul>
+
+<p id = "a3">해킹메일 (0) </p>
+	<ul id = email>
+	</ul>
+
+</nav>
+    <form>
+        <input type="file" id="getfile" multiple>
+
+        <div class="drop-zone">
+	파일 드래그..
         </div>
-    </div>
-	<pre id="preview">텍스트 파일 내용 출력 영역</pre>
-
-<input type="file" id="getfile" accept="text/*">
-
+    </form>
 <script>
 
 var file = document.querySelector('#getfile');
@@ -84,8 +77,129 @@ file.onchange = function () {
 }; 
 
 </script>
-     <div class="row marketing">
-     </div>
+<script>
+
+	var strText;
+        (function() {
+            
+            var $file = document.getElementById("getfile")
+            var dropZone = document.querySelector(".drop-zone")
+
+            var toggleClass = function(className) {
+                
+                console.log("current event: " + className)
+
+                var list = ["dragenter", "dragleave", "dragover", "drop"]
+
+                for (var i = 0; i < list.length; i++) {
+                    if (className === list[i]) {
+                        dropZone.classList.add("drop-zone-" + list[i])
+                    } else {
+                        dropZone.classList.remove("drop-zone-" + list[i])
+                    }
+                }
+            }
+            
+            var showFiles = function(files) {
+                dropZone.innerHTML = ""
+                for(var i = 0, len = files.length; i < len; i++) {
+                    dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+                }
+            }
+
+            var selectFile = function(files) {
+                // input file 영역에 드랍된 파일들로 대체
+                $file.files = files
+                showFiles($file.files)
+                
+            }
+            
+            $file.addEventListener("change", function(e) {
+                showFiles(e.target.files)
+            })
+
+            // 드래그한 파일이 최초로 진입했을 때
+            dropZone.addEventListener("dragenter", function(e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                toggleClass("dragenter")
+
+            })
+
+            // 드래그한 파일이 dropZone 영역을 벗어났을 때
+            dropZone.addEventListener("dragleave", function(e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                toggleClass("dragleave")
+
+            })
+
+            // 드래그한 파일이 dropZone 영역에 머물러 있을 때
+            dropZone.addEventListener("dragover", function(e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                toggleClass("dragover")
+
+            })
+
+            // 드래그한 파일이 드랍되었을 때
+            dropZone.addEventListener("drop", function(e) {
+                e.preventDefault()
+
+                toggleClass("drop")
+
+                var files = e.dataTransfer && e.dataTransfer.files
+                console.log(files);
+
+           	    var reader = new FileReader();
+  	  reader.readAsText(files[0]);
+    reader.onload = function  () {
+	strText = reader.result.split("\n");
+	showItem(strText);
+
+    }; 
+                if (files != null) {
+                    if (files.length < 1) {
+                        alert("폴더 업로드 불가")
+                        return
+                    }
+                    selectFile(files)
+                } else {
+                    alert("ERROR")
+                }
+
+            })
+
+        })();
+
+function showItem(items){
+     var ips = $("#ip");     
+var urls = $("#url");     
+var emails = $("#email");
+     const result1 = items.filter(e=>e.split(" ")[0] == "IP");
+     const result2 = items.filter(e=>e.split(" ")[0] == "URL");
+     const result3 = items.filter(e=>e.split(" ")[0] == "해킹메일");	
+
+     document.getElementById("a1").innerHTML = "IP ("+result1.length+")";
+	for(var i = 0; i<result1.length; i++){
+	ips.append("<li>"+result1[i].split(" ")[1]+"</li>");
+	}
+	
+     document.getElementById("a2").innerHTML = "URL ("+result2.length+")";
+	for(var i = 0; i<result2.length; i++){
+	urls.append("<li>"+result2[i].split(" ")[1]+"</li>");
+	}
+
+     document.getElementById("a3").innerHTML = "해킹메일 ("+result3.length+")";
+	for(var i = 0; i<result3.length; i++){
+	emails.append("<li>"+result3[i].split(" ")[1]+"</li>");
+	}
+
+}
+    </script>
    </div> <!-- /container -->
   </body>
 </html>
