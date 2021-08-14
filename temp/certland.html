@@ -10,35 +10,57 @@
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
       userdata = window.localStorage;
-
+      var D = false;
+      function loginSession(loginData){
+        Name = loginData[1];
+        Money = loginData[2];
+        $("#t *").remove();
+        $("#t").append(Name);
+        $("#t").append(" : "+Money+" CT");
+        $("#t2").remove();
+        $("#t3").remove();
+        $(".navbar-nav").append("<li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">로그아웃</a></li>");
+        $("#n1").append("정통전대 "+Name+" 식당 보고.");
+      }
       function login(){
 
         id = document.getElementById('userid').value;
         pw = document.getElementById('userpw').value;
-
-        if(userdata.getItem(id)==pw){
-          alert("환영합니다.");
+        if (id.length*pw.length != 0) data = JSON.parse(userdata.getItem(id))
+        if(data[0]==pw){
+          alert("환영합니다.\n 로그인 계정 : "+data[1]);
+          D = true;
+          loginSession(data);
+        }else{
+          alert("PW가 바르지 않습니다.");
         }
       }
       function register(){
 
-        id = document.getElementById('userid').value;
-        pw = document.getElementById('userpw').value;
+        id = document.getElementById('userid2').value;
+        pw = document.getElementById('userpw2').value;
         name = document.getElementById('username').value;
-        userdata.setItem(id,pw);
+        data = [pw,name,15000]
+        if (id.length*pw.length*name.length == 0)
+          alert("공백은 입력할 수 없습니다.");
+        else {
+          userdata.setItem(id,JSON.stringify(data));
+                alert("회원 가입 완료");
+        }
       }
+
     </script>
   </head>
   <body> <!-- header -->
     <div class="jumbotron text-center mb-0"> <h1>CERT LAND</h1> <p>군수사 정통전대 문화 센터</p>
      </div> <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-       <a href="#" class="navbar-brand">Cert Land</a> <!-- Toggle Button -->
+       <a href="#" class="navbar-brand" id = "t">  Cert Land | </a> <!-- Toggle Button -->
        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"> <span class="navbar-toggler-icon"></span> </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
           <ul class="navbar-nav">
             <li class="nav-item"><a href="#" class="nav-link">공지사항</a></li>
-            <li class="nav-item"><a href="#" data-toggle="modal" data-target="#login" class="nav-link">로그인</a></li>
-            <li class="nav-item"><a href="#" data-toggle="modal" data-target="#register" class="nav-link">회원가입</a></li>
+            <li class="nav-item"><a href="#" data-toggle="modal" data-target="#login" class="nav-link"id = "t2">로그인</a></li>
+            <li class="nav-item"><a href="#" data-toggle="modal" data-target="#register" class="nav-link" id = "t3">회원가입</a></li>
             <li class="nav-item"><a href="#" class="nav-link">랭킹</a></li>
           </ul>
         </div>
@@ -95,7 +117,7 @@
                    <div class="input-group-prepend">
                      <span class="input-group-text" id="basic-addon1">ID</span>
                    </div>
-                   <input id = "userid" type="text" name="userID" class="form-control"
+                   <input id = "userid2" type="text" name="userID" class="form-control"
                      placeholder="Input ID" aria-label="아이디"
                      aria-describedby="basic-addon1" required>
                  </div>
@@ -104,7 +126,7 @@
                    <div class="input-group-prepend">
                      <span class="input-group-text" id="basic-addon1">PW</span>
                    </div>
-                   <input id = "userpw" type="password" name="userID" class="form-control"
+                   <input id = "userpw2" type="password" name="userID" class="form-control"
                      placeholder="Input Password" aria-label="비밀번호"
                      aria-describedby="basic-addon1" required>
                  </div>
@@ -115,11 +137,52 @@
                </div>
               </div>
             </div>
+      <div class = "main">
+        <br>
+
+        <div class="row">
+          <div class ="col-6">
+            <div class="jumbotron">
+              <h1 class="text-center">경마 🐱‍🏍   </h1>
+              <p class="text-center">군수사 연병장에서 펼쳐지는 경마 대결!</p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+            </div>
+          </div>
+          <div class ="col-6">
+            <div class="jumbotron">
+              <h1 class="text-center">랜덤 추라이 디펜스 🎂    </h1>
+              <p class="text-center" id = n1>* </p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+            </div>
+          </div>
+          <div class ="col"></div>
+        </div>
+        <div class="row">
+          <div class ="col-6">
+            <div class="jumbotron">
+              <h1 class="text-center">룰렛 🎁   </h1>
+              <p class="text-center">인생 역전 룰렛</p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+            </div>
+          </div>
+          <div class ="col-6">
+            <div class="jumbotron">
+              <h1 class="text-center">군수사에서 살아남기 ✨  </h1>
+              <p class="text-center">수집형 RPG 게임</p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+            </div>
+          </div>
+          <div class ="col"></div>
+        </div>
+        <div class="container">
+
+ </div>
+      </div>
       </div>
       <!-- footer -->
        <div class="jumbotron text-center mt-5 mb-0">
           <h3 class="text-secondary">CERT LAND</h3>
-           <p>CertLand is powered by <span class="text-primary">일병 서종찬</span></p>
+           <p>CertLand powered by <span class="text-primary">일병 서종찬</span></p>
       </div>
      </body>
     </html>
