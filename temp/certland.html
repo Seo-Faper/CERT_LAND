@@ -19,7 +19,7 @@
         $("#t").append(" : "+Money+" CT");
         $("#t2").remove();
         $("#t3").remove();
-        $(".navbar-nav").append("<li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">로그아웃</a></li>");
+        $(".navbar-nav").append("<li class=\"nav-item\"><a href=\"#\" class=\"nav-link\" onclick=\"location.reload();\">로그아웃</a></li>");
         $("#n1").append("정통전대 "+Name+" 식당 보고.");
       }
       function login(){
@@ -48,6 +48,16 @@
                 alert("회원 가입 완료");
         }
       }
+      function Game1(n){
+        var games = ["경마","랜덤 추라이 디펜스","룰렛","군수사에서 살아남기"]
+        if(!D){
+          alert("로그인 먼저 해 주세요.");
+          location.reload();
+          return;
+        }else{
+          document.getElementById("GameTitle").innerHTML = games[n];
+        }
+      }
 
     </script>
   </head>
@@ -61,12 +71,28 @@
             <li class="nav-item"><a href="#" class="nav-link">공지사항</a></li>
             <li class="nav-item"><a href="#" data-toggle="modal" data-target="#login" class="nav-link"id = "t2">로그인</a></li>
             <li class="nav-item"><a href="#" data-toggle="modal" data-target="#register" class="nav-link" id = "t3">회원가입</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">랭킹</a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#rank">랭킹</a></li>
           </ul>
         </div>
        </nav>
       <!-- content -->
       <div class = "container pt-1">
+        <!--랭킹 -->
+        <div class="modal fade" id="rank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="height:100%">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">랭킹</h4>
+              </div>
+              <div class="modal-body-rank">
+                <br>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <!--로그인-->
         <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -139,20 +165,19 @@
             </div>
       <div class = "main">
         <br>
-
         <div class="row">
           <div class ="col-6">
             <div class="jumbotron">
               <h1 class="text-center">경마 🐱‍🏍   </h1>
               <p class="text-center">군수사 연병장에서 펼쳐지는 경마 대결!</p>
-              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#Game" onclick="Game1(0)">입장</a></p>
             </div>
           </div>
           <div class ="col-6">
             <div class="jumbotron">
               <h1 class="text-center">랜덤 추라이 디펜스 🎂    </h1>
               <p class="text-center" id = n1>* </p>
-              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#Game" onclick="Game1(1)">입장</a></p>
             </div>
           </div>
           <div class ="col"></div>
@@ -162,20 +187,35 @@
             <div class="jumbotron">
               <h1 class="text-center">룰렛 🎁   </h1>
               <p class="text-center">인생 역전 룰렛</p>
-              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#Game" onclick="Game1(2)">입장</a></p>
             </div>
           </div>
           <div class ="col-6">
             <div class="jumbotron">
               <h1 class="text-center">군수사에서 살아남기 ✨  </h1>
               <p class="text-center">수집형 RPG 게임</p>
-              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button">입장</a></p>
+              <p class="text-center"><a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#Game" onclick="Game1(3)">입장</a></p>
             </div>
           </div>
           <div class ="col"></div>
         </div>
         <div class="container">
-
+          <!-- Modal -->
+<div class="modal fade" id="Game" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="GameTitle"></h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
  </div>
       </div>
       </div>
