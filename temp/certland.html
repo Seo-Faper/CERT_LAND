@@ -56,6 +56,8 @@
           return;
         }else{
           document.getElementById("GameTitle").innerHTML = games[n];
+           $("#InGame").html("<canvas id=\"canvas_"+n+"\" width=\"300\" height=\"300\"></canvas>");
+
         }
       }
 
@@ -79,7 +81,7 @@
       <div class = "container pt-1">
         <!--랭킹 -->
         <div class="modal fade" id="rank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="height:100%">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="width:100%">
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">랭킹</h4>
@@ -163,6 +165,21 @@
                </div>
               </div>
             </div>
+        <div class="modal fade" id="Game" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="GameTitle"></h4>
+                  </div>
+                  <div class="modal-body" id = "InGame">
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
       <div class = "main">
         <br>
         <div class="row">
@@ -201,21 +218,6 @@
         </div>
         <div class="container">
           <!-- Modal -->
-<div class="modal fade" id="Game" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="GameTitle"></h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
  </div>
       </div>
       </div>
