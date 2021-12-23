@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="kr" dir="ltr">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <style media="screen">
+.zt-skill-bar {
+        color: #fff;
+        font-size: 20px;
+        line-height: 30px;
+        height: 30px;
+        margin-bottom: 5px;
+ 
+        background-color: rgba(0,0,0,0.1);
+ 
+        -webkit-border-radius: 2px;
+           -moz-border-radius: 2px;
+            -ms-border-radius: 2px;
+                border-radius: 2px;
+ 
+    }
+ 
+    .zt-skill-bar * {
+        webkit-transition: all 0.5s ease;
+          -moz-transition: all 0.5s ease;
+           -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+               transition: all 0.5s ease;
+    }
+ 
+    .zt-skill-bar div {
+        background-color: #ffc600;
+        position: relative;
+        padding-left: 25px;
+        width: 0;
+ 
+        -webkit-border-radius: 2px;
+           -moz-border-radius: 2px;
+           -ms- border-radius: 2px;
+                border-radius: 2px;
+    }
+ 
+    .zt-skill-bar span {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        padding: 0 5px 0 10px;
+        background-color: #1a1a1a;
+ 
+        -webkit-border-radius: 0 2px 2px 0;
+           -moz-border-radius: 0 2px 2px 0;
+            -ms-border-radius: 0 2px 2px 0;
+                border-radius: 0 2px 2px 0;
+    }
+ 
+    .zt-skill-bar span:before {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        top: 50%;
+        left: -3px;
+        margin-top: -3px;
+        background-color: #1a1a1a;
+ 
+        -webkit-transform: rotate(45deg);
+           -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+    }
+    </style>
+    <title>CERT 용량 조사 체계</title>
+  </head>
+  <body>
+      
+    <div class="zt-span6 last">
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <h3><strong>UTM 사용량</strong></h3>
+        <div class="zt-skill-bar"><div class="g1"data-width="0" style="">CPU<span>-%</span></div></div>
+        <div class="zt-skill-bar"><div class="g2"data-width="0" style="">HDD<span>-%</span></div></div>
+        <div class="zt-skill-bar"><div class="g3"data-width="0" style="">RAM<span>-%</span></div></div>
+  </body>
+  <script>
+      
+(function( $ ) {
+    
+    "use strict";
+    $(function() {
+        var V1 = 13;
+        var V2 = 30;
+        var V3 = 88;
+
+        $('.g1').data('width', V1);
+        $('.g1').children('span').text(V1+"%");
+
+        $('.g2').data('width', V2);
+        $('.g2').children('span').text(V2+"%");
+
+        $('.g3').data('width', V3);
+        $('.g3').children('span').text(V3+"%");
+        function animated_contents() {
+            
+            $(".zt-skill-bar > div ").each(function (i) {
+                var $this  = $(this),
+                    value = $this.data('width');
+                $this.css({'width' :  value+ '%'});
+            });
+        }
+        
+        if(jQuery().appear) {
+            $('.zt-skill-bar').appear().on('appear', function() {
+                animated_contents();
+            });
+        } else {
+            animated_contents();
+        }
+    });
+}(jQuery));
+  </script>
+</html>
